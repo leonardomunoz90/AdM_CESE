@@ -12,7 +12,10 @@
 ### Cortex M
 
 1. Describa brevemente las diferencias entre las familias de procesadores Cortex M0, M3 y M4.
-> Respuesta
+> - Cortex M0: Utiliza la arquitectura ARMv6-M (con arquitectura de computadora Von Neumann), se utiliza principalmente en aplicaciones de bajo costo y bajo consumo que no requieren de gran cantidad de perifericos. Utilizan de manera parcial el set de instrucciones Thumb y Thumb-2. Existe tambien la familia Cortex M0+ con mayor rendimiento tambien para aplicaciones de bajo consumo, una de sus principales diferencias es la disposición de MPU en algunos casos.
+> - Cortex M3: Utiliza la arquitectura ARMv7-M (con arquitectura de computadora de Hardvard). Disponen de la totalidad de las instrucciones Thumb y Thumb-2 con mejoras en lo que refiere a poder de procesamiento, frecuencia de trabajo, incorporación de SRAM y mejoras para implemenación de multiplicación y divisiones. Esto a costa de un incremento en su consumo respecto de un Cortex M0 
+> - Cortex M4: Utiliza la arquitectura ARMv7-M. Su principal diferencia respecto de la familia cortex M3 es que dispone de hardware para DSP con posibilidad de unidad de punto flotante
+
 2. ¿Por qué se dice que el set de instrucciones Thumb permite mayor densidad de código? Explique
 > Respuesta
 3. ¿Qué entiende por arquitectura load-store? ¿Qué tipo de instrucciones no posee este tipo de arquitectura?
