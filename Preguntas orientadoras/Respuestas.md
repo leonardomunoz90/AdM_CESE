@@ -3,7 +3,11 @@
 ### Preguntas orientadoras
 
 1. Describa brevemente los diferentes perfiles de familias de microprocesadores/microcontroladores de ARM. Explique alguna de sus diferencias características.
-> Respuesta
+> - Cortex A: Familia de microcontroladores especialmente dedicada a aplicaciones donde prima el alto rendimiento y multitarea. Suelen disponer de perifericos para optimización temporal (por ejemplo memoria cache), perifericos para procesamiento de imagen y tienen la capacidad de correr un sistema operativo como Linux o Android. Se encuentran en dispositivos como tablets o smartphones con una frecuencia de reloj en el orden de los GHz.
+> - Cortex R: Principalmente utilizado para tareas de tiempo real, buscando un determinismo temporal entre las multiples tareas para lograr sistemas confiables y lo mas predecibles posibles. Se utilizan principalmente e industriales críticos, sector automotiz, médico o aplicaciones de hard real time.
+> - Cortex M: Utilizado en amplio rango de sistemas embebidos en general con gran versatiliad, existiendo una amplia oferta según se requeriera mayor poder de prcesamiento, bajo consumo, sistemas compactos, etc.
+
+---
 
 ### Cortex M
 
