@@ -1,4 +1,4 @@
-# Resolución de tranajo práctico
+# Resolución de trabajo práctico
 
 ### Preguntas orientadoras
 
