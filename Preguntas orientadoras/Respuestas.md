@@ -21,12 +21,20 @@
 > - El primero es que las instrucciones más usadas del set de instrucciones ARM de 32 bits tienen correspondencia con  instrucciones Thumb de 16 bits, por lo que se pueden guardar mayor cantidad de instrucciones en un menor espacio de memoria.
 > - Además, dispone de instrucciones de 32 bits que ejecutan más de una operación bajo una misma instucciones o opcode (con determinados sufijos) que se ejecutan en único ciclo de reloj.
 > Por otro lado, el hecho de tener una mayor densidad de código impacta positivamente en el costo del microcontrolador (al requerir menos memoria) y en el consumo.
+
 3. ¿Qué entiende por arquitectura load-store? ¿Qué tipo de instrucciones no posee este tipo de arquitectura?
 > Esto significa que los datos deben cargarse desde la memoria, procesarse y luego volver a escribirse en la memoria utilizando una serie de instrucciones separadas. Por ejemplo, para incrementar un valor de datos almacenado en SRAM, el procesador necesita usar una instrucción para leer los datos de SRAM y colocarlos en un registro dentro del procesador, una segunda instrucción para incrementar el valor del registro y luego una tercera instrucción para escribir el valor de nuevo en la memoria
+
 4. ¿Cómo es el mapa de memoria de la familia? 
-> Respuesta
+> Los procesadores Cortex M disponen de 32 bits de direccionamiento, por lo que son capaces de direccionar hasta 4GB. Sobre este mapa de memoria de encuentran todos los perifericos, datos, código de programa y demás de manera continua.
+
 5. ¿Qué ventajas presenta el uso de los “shadowed pointers” del PSP y el MSP?
-> Respuesta
+> Los microcontrolares disponen de un registro llamado stack pointer, que indica donde comienza el stack de cada tarea dentro de la SRAM. Los shadowed pointers permiten la cohexistencia de dos tipos de stack pointers en los modos de operación privilegiado y no privilegiado.
+> - Main stack pointer (MSP): es utilizado por el kernel y las interrupciones en modo privilegiado (Handler mode)
+> - Process stack pointer (PSP): es utilizado por las tareas que se ejecutan en modo no privilegiado (Thread mode)
+> 
+> La separación de los niveles de acceso privilegiado y no privilegiado permite el desarrollo de sistemas  robustos al proporcionar un mecanismo para proteger los accesos a la memoria en regiones críticas.
+
 6. Describa los diferentes modos de privilegio y operación del Cortex M, sus relaciones y como se conmuta de uno al otro. Describa un ejemplo en el que se pasa del modo privilegiado a no priviligiado y nuevamente a privilegiado.
 > Respuesta
 7. ¿Qué se entiende por modelo de registros ortogonal? Dé un ejemplo
