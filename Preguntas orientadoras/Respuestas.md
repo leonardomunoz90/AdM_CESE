@@ -22,7 +22,7 @@
 > - Además, dispone de instrucciones de 32 bits que ejecutan más de una operación bajo una misma instucciones o opcode (con determinados sufijos) que se ejecutan en único ciclo de reloj.
 > Por otro lado, el hecho de tener una mayor densidad de código impacta positivamente en el costo del microcontrolador (al requerir menos memoria) y en el consumo.
 3. ¿Qué entiende por arquitectura load-store? ¿Qué tipo de instrucciones no posee este tipo de arquitectura?
-> Respuesta
+> Esto significa que los datos deben cargarse desde la memoria, procesarse y luego volver a escribirse en la memoria utilizando una serie de instrucciones separadas. Por ejemplo, para incrementar un valor de datos almacenado en SRAM, el procesador necesita usar una instrucción para leer los datos de SRAM y colocarlos en un registro dentro del procesador, una segunda instrucción para incrementar el valor del registro y luego una tercera instrucción para escribir el valor de nuevo en la memoria
 4. ¿Cómo es el mapa de memoria de la familia? 
 > Respuesta
 5. ¿Qué ventajas presenta el uso de los “shadowed pointers” del PSP y el MSP?
