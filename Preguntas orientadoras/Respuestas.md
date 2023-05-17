@@ -17,9 +17,10 @@
 > - Cortex M4: Utiliza la arquitectura ARMv7-M. Su principal diferencia respecto de la familia cortex M3 es que dispone de hardware para DSP con posibilidad de unidad de punto flotante
 
 2. ¿Por qué se dice que el set de instrucciones Thumb permite mayor densidad de código? Explique
-> Thumb permite mayor densidad de código principalmente por dos motivos:
-> - El primero es por la compatibilidad con instrucciones de 16 bits, por lo que se pueden guardar mayor cantidad de instrucciones en un menor espacio de memoria.
-> - Además, dispone de instrucciones de 32 bits que ejecutan más de una operación con bajo una misma instucciones o opcode (con determinados sufijos) que se ejecutan en único ciclo de reloj.
+> Thumb permite utilizar de manera conjunta instrucciones de 16 bits y 32 bits. Esto brinda una mayor densidad de código principalmente por dos motivos:
+> - El primero es que las instrucciones más usadas del set de instrucciones ARM de 32 bits tienen correspondencia con  instrucciones Thumb de 16 bits, por lo que se pueden guardar mayor cantidad de instrucciones en un menor espacio de memoria.
+> - Además, dispone de instrucciones de 32 bits que ejecutan más de una operación bajo una misma instucciones o opcode (con determinados sufijos) que se ejecutan en único ciclo de reloj.
+> Por otro lado, el hecho de tener una mayor densidad de código impacta positivamente en el costo del microcontrolador (al requerir menos memoria) y en el consumo.
 3. ¿Qué entiende por arquitectura load-store? ¿Qué tipo de instrucciones no posee este tipo de arquitectura?
 > Respuesta
 4. ¿Cómo es el mapa de memoria de la familia? 
