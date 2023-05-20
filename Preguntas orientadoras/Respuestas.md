@@ -52,7 +52,9 @@
 13. ¿Cómo se implementan las prioridades de las interrupciones? Dé un ejemplo
 > Respuesta
 14. ¿Qué es el CMSIS? ¿Qué función cumple? ¿Quién lo provee? ¿Qué ventajas aporta?
-> Respuesta
+> Es un proyecto de ARM que permite que la programación de microcontroladorea basados en Cortex-M sea sencilla y migrable a productos de diferentes fabricantes, al proporcionar archivos y una API para las funciones estándar del procesador Cortex-M. 
+> Esto permite una mejor reutilización del software y también facilita la portabilidad del código de la aplicación.
+
 15. Cuando ocurre una interrupción, asumiendo que está habilitada ¿Cómo opera el microprocesador para atender a la subrutina correspondiente? Explique con un ejemplo
 > Respuesta
 16. ¿Cómo cambia la operación de stacking al utilizar la unidad de punto flotante? 
