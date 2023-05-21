@@ -48,7 +48,10 @@
 11. Describa la secuencia de reset del microprocesador. 
 > Respuesta
 12. ¿Qué entiende por “core peripherals”? ¿Qué diferencia existe entre estos y el resto de los periféricos?
-> Respuesta
+> Los core peripherals son todos aquellos periféricos que, en conjunto con el nucleo del procesador conforman un microcontrolador Cortex M. Estos son diseñados por el proveedor de la IP y dependen de la microarquitectura del procesador, entre los que se encuentran NVIC, MPU, WIC, FPU , embedded trace macrocell (ETM), debug access port, entre otros.
+> 
+> Por otro lado, cada fabricante de silicio que utilice la IP Cortex-M puede agregar perifericos que se comuniquen con el procesador según lo considere para su aplicación, entre los que se encuentran ADC, UART, SPI, USB, CAN, etc.
+> 
 13. ¿Cómo se implementan las prioridades de las interrupciones? Dé un ejemplo
 > Respuesta
 14. ¿Qué es el CMSIS? ¿Qué función cumple? ¿Quién lo provee? ¿Qué ventajas aporta?
