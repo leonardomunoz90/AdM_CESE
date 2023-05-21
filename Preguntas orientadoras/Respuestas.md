@@ -52,9 +52,10 @@
 13. ¿Cómo se implementan las prioridades de las interrupciones? Dé un ejemplo
 > Respuesta
 14. ¿Qué es el CMSIS? ¿Qué función cumple? ¿Quién lo provee? ¿Qué ventajas aporta?
-> Es un proyecto de ARM que permite que la programación de microcontroladorea basados en Cortex-M sea sencilla y migrable a productos de diferentes fabricantes, al proporcionar archivos y una API para las funciones estándar del procesador Cortex-M. 
-> Esto permite una mejor reutilización del software y también facilita la portabilidad del código de la aplicación.
-
+> Es un proyecto de ARM que permite que la programación de microcontroladorea basados en Cortex-M sea sencilla y migrable a productos de diferentes fabricantes, al proporcionar archivos y una API para las funciones estándar del procesador Cortex-M. Las ventajas que CMSIS aporta son:
+> - Mayor reutilización de software : facilita la reutilización de código de software en diferentes proyectos de Cortex-M, lo que reduce el tiempo de comercialización y los esfuerzos de verificación.
+> - Mejor compatibilidad de software: al tener una infraestructura de software consistente (por ejemplo, API para funciones de acceso al núcleo del procesador, método de inicialización del sistema, estilo común para definir periféricos), el software de varias fuentes puede trabajar en conjunto, lo que reduce el riesgo en la integración.
+> - Independiente del toolchain: los driver de dispositivos compatibles con CMSIS se pueden usar con varias herramientas de compilación.
 15. Cuando ocurre una interrupción, asumiendo que está habilitada ¿Cómo opera el microprocesador para atender a la subrutina correspondiente? Explique con un ejemplo
 > Respuesta
 16. ¿Cómo cambia la operación de stacking al utilizar la unidad de punto flotante? 
