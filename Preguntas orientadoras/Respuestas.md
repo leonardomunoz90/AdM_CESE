@@ -33,7 +33,7 @@
 > - Main stack pointer (MSP): es utilizado por el kernel y las interrupciones en modo privilegiado (Handler mode)
 > - Process stack pointer (PSP): es utilizado por las tareas que se ejecutan en modo no privilegiado (Thread mode)
 > 
-> La separación de los niveles de acceso privilegiado y no privilegiado permite el desarrollo de sistemas  robustos al proporcionar un mecanismo para proteger los accesos a la memoria en regiones críticas.
+> De esta manera, la pila utilizada por el kernel del sistema operativo se puede separar de ese uso por parte de las tareas de la aplicación, lo que permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Además permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Para aplicaciones simples sin un sistema operativo, el stack pointer puede usar directamente el MSP.
 
 6. Describa los diferentes modos de privilegio y operación del Cortex M, sus relaciones y como se conmuta de uno al otro. Describa un ejemplo en el que se pasa del modo privilegiado a no priviligiado y nuevamente a privilegiado.
 > Respuesta
