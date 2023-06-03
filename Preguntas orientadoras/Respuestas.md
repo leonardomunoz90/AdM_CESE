@@ -48,7 +48,7 @@
 > En caso de que ocurra un salto, mediante la instrucción PUSH se coloca el entorno de ejecución al final de la pila y cuando se retorna del salto se utiliza la instrucción POP, la cual extra la última entrada a la pila (por ser una memoria tipo LIFO) y vuelve a cargarse el entorno del microcontrolador en sus registros. 
 > Es importante aclarar que, en caso de un salto, el valor del contador de programa (CP) se guarda en el registro link register (LR) para que ocurre el retorno de dicho salto, el microcontrolador pueda continuar la ejecución como lo estaba haciendo.
 11. Describa la secuencia de reset del microprocesador. 
-> Respuesta
+> Luego de la posición cero de la memoria flash (que es donde se encuentra el valor del MSP) se encuentra el NVIC (vector de interrupciones), donde la primera posición de este vector contiene la dirección de memoria en la que se encuentra el inicio de la función de reset dentro de la memoria flash (que debe cargarse en el PC). Esta función se encarga de la inicialización de periféricos del fabricante, CMSIS, BSP, entre otras cosas. Una vez finalizado esto, la función de reset llama a la función main para iniciar su ejecución.
 12. ¿Qué entiende por “core peripherals”? ¿Qué diferencia existe entre estos y el resto de los periféricos?
 > Los core peripherals son todos aquellos periféricos que, en conjunto con el nucleo del procesador conforman un microcontrolador Cortex M. Estos son diseñados por el proveedor de la IP y dependen de la microarquitectura del procesador, entre los que se encuentran NVIC, MPU, WIC, FPU , embedded trace macrocell (ETM), debug access port, entre otros.
 > 
