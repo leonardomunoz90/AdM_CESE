@@ -45,7 +45,9 @@
 > Respuesta
 10. Describa las funciones principales de la pila. ¿Cómo resuelve la arquitectura el llamado a funciones y su retorno?
 > La pila es una memoria tipo LIFO que se encarga de guardar el entorno de ejecución del microcontrolador cuando occurre un salto en su ejecución, para esto utiliza las instrucciones PUSH y POP. 
+> 
 > En caso de que ocurra un salto, mediante la instrucción PUSH se coloca el entorno de ejecución al final de la pila y cuando se retorna del salto se utiliza la instrucción POP, la cual extra la última entrada a la pila (por ser una memoria tipo LIFO) y vuelve a cargarse el entorno del microcontrolador en sus registros. 
+> 
 > Es importante aclarar que, en caso de un salto, el valor del contador de programa (CP) se guarda en el registro link register (LR) para que ocurre el retorno de dicho salto, el microcontrolador pueda continuar la ejecución como lo estaba haciendo.
 11. Describa la secuencia de reset del microprocesador. 
 > Luego de la posición cero de la memoria flash (que es donde se encuentra el valor del MSP) se encuentra el NVIC (vector de interrupciones), donde la primera posición de este vector contiene la dirección de memoria en la que se encuentra el inicio de la función de reset dentro de la memoria flash (que debe cargarse en el PC). Esta función se encarga de la inicialización de periféricos del fabricante, CMSIS, BSP, entre otras cosas. Una vez finalizado esto, la función de reset llama a la función main para iniciar su ejecución.
@@ -81,7 +83,10 @@
 21. ¿Para qué se suele utilizar la excepción PendSV? ¿Cómo se relaciona su uso con el resto de las excepciones? Dé un ejemplo
 > Respuesta
 22. ¿Para qué se suele utilizar la excepción SVC? Expliquelo dentro de un marco de un sistema operativo embebido.
-> Respuesta
+> Una tarea de usuario dentro de un sistema operativo no puede realizar una llamada a periféricos o a memoria de manera directa por no poseer privilegios para hacerlo. Sino que esto debe hacerlo el sistema operativo. Una herramienta que dispone el usuario para hacerlo es a través del llamado a la excepción por software SVC, la cual puede llamarse desde modo no privilegiado. 
+> 
+> Por defecto, la ejecución de la función de manejo de SVC se hace en modo privilegiado. Esto permite invocar al sistema operativo y dar una respuesta a la petición de servicio generada por la tarea de usuario. Esto brinda mayor robustez e inmunidad al funcionamiento del sistema, evitando que una tarea corrompa su funcionamiento.
+
 
 ### ISA
 
