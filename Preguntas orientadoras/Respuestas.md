@@ -44,7 +44,9 @@
 9. Describa brevemente las excepciones más prioritarias (reset, NMI, Hardfault). 
 > Respuesta
 10. Describa las funciones principales de la pila. ¿Cómo resuelve la arquitectura el llamado a funciones y su retorno?
-> Respuesta
+> La pila es una memoria tipo LIFO que se encarga de guardar el entorno de ejecución del microcontrolador cuando occurre un salto en su ejecución, para esto utiliza las instrucciones PUSH y POP. 
+> En caso de que ocurra un salto, mediante la instrucción PUSH se coloca el entorno de ejecución al final de la pila y cuando se retorna del salto se utiliza la instrucción POP, la cual extra la última entrada a la pila (por ser una memoria tipo LIFO) y vuelve a cargarse el entorno del microcontrolador en sus registros. 
+> Es importante aclarar que, en caso de un salto, el valor del contador de programa (CP) se guarda en el registro link register (LR) para que ocurre el retorno de dicho salto, el microcontrolador pueda continuar la ejecución como lo estaba haciendo.
 11. Describa la secuencia de reset del microprocesador. 
 > Respuesta
 12. ¿Qué entiende por “core peripherals”? ¿Qué diferencia existe entre estos y el resto de los periféricos?
