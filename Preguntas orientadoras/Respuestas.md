@@ -48,8 +48,9 @@
 > En el caso de los microcontroladores Cortex-M, el modelo de registro ortogonal permite acceder a los registros de propósito general desde cualquier nivel de privilegio, lo que proporciona flexibilidad y facilidad de uso. Por ejemplo, en el caso del registro de SP, ya sea que este apunte a MSP o PSP (inidicado por el bit SPSEL del registro de control) , le es totalmente transparece ya que puede hacerlo en ambos niveles de privilegios (si bien no es muy recomendable utilizar MSP en modo no privilegiado).
 
 8. ¿Qué ventajas presenta el uso de intrucciones de ejecución condicional (IT)? Dé un ejemplo
-> Respuesta
-
+> EL uso de instrucciones condicionales if-true agregando sufijos a la instrucción ejecutada. En caso de que el condicional de falso, no debe ejecutar nada y se reemplaza por un NOP, sin afectar a la búsqueda y decodificación de instrucciones siguientes. 
+> 
+> Tiene como ventaja principal que se mantiene el régimen del pipeline de ejecutar una instrucción por ciclo de reloj y no se destruye el pipeline como ocurría con un salto incondicional.
 
 9. Describa brevemente las excepciones más prioritarias (reset, NMI, Hardfault). 
 > ARM define 15 interrupciones que se encuentran en las primeras posiciones de NVIC (las siguientes están definidas por cada fabricante que utilice la IP), entre las cuales se encuentran 3 cuya prioridad está establecida con un valor más importante que el resto de las excepciones y no puede modificarse por su gran importancia. Estas son:
