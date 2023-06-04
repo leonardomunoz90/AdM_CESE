@@ -120,7 +120,10 @@
 > Por ejemplo, la instrucción ADDS R1, R2, R3 suma el contenido de los registros R2 y R3 y almacena el resultado en el registro R1. Además, actualiza las banderas de estado según el resultado de la suma.
 
 3. ¿Qué utilidad tiene la implementación de instrucciones de aritmética saturada? Dé un ejemplo con operaciones con datos de 8 bits.
-> Respuesta
+> La implementación de instrucciones de aritmética permite evitar desbordamientos y garantiza que los resultados se mantengan dentro de un rango específico. A nivel físico, un desbordamiento podría visualizarse como una señal que crece hacia un máximo positivo y de manera repentina pasa al valor máximo negativo.
+> 
+> La aritmética saturada evita este desbordamiento y mantiene el resultado dentro de un rango permitido. Por ejemplo, para variables no signadas de 8 bits mantiene su valor entre 0 y 255, en caso de un desbordamiento, el valor se mantiene en estos valores límites.
+
 4. Describa brevemente la interfaz entre assembler y C ¿Cómo se reciben los argumentos de las funciones? ¿Cómo se devuelve el resultado? ¿Qué registros deben guardarse en la pila antes de ser modificados?
 > Respuesta
 5. ¿Qué es una instrucción SIMD? ¿En qué se aplican y que ventajas reporta su uso? Dé un ejemplo.
