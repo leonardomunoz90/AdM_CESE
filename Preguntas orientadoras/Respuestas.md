@@ -36,37 +36,45 @@
 > De esta manera, la pila utilizada por el kernel del sistema operativo se puede separar de ese uso por parte de las tareas de la aplicación, lo que permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Además permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Para aplicaciones simples sin un sistema operativo, el stack pointer puede usar directamente el MSP.
 
 6. Describa los diferentes modos de privilegio y operación del Cortex M, sus relaciones y como se conmuta de uno al otro. Describa un ejemplo en el que se pasa del modo privilegiado a no priviligiado y nuevamente a privilegiado.
-> Respuesta
+> 
 7. ¿Qué se entiende por modelo de registros ortogonal? Dé un ejemplo
-> Respuesta
+> En el caso de los microcontroladores Cortex-M, el modelo de registro ortogonal permite acceder a los registros desde cualquier nivel de privilegio, lo que proporciona flexibilidad y facilidad de uso. Por ejemplo, en el caso del registro de SP, ya sea que este apunte a MSP o PSP, le es totalmente transparece ya que puede hacerlo en ambos niveles de privilegios (si bien no es muy recomendable utilizar MSP en modo no privilegiado).
+
 8. ¿Qué ventajas presenta el uso de intrucciones de ejecución condicional (IT)? Dé un ejemplo
 > Respuesta
+
+
 9. Describa brevemente las excepciones más prioritarias (reset, NMI, Hardfault). 
 > ARM define 15 interrupciones que se encuentran en las primeras posiciones de NVIC (las siguientes están definidas por cada fabricante que utilice la IP), entre las cuales se encuentran 3 cuya prioridad está establecida con un valor más importante que el resto de las excepciones y no puede modificarse por su gran importancia. Estas son:
 > - RESET: es generada al encender o reiniciar el microcontrolador. Cuando se produce el reset, se restablecen todos los registros y se borra la memoria del microcontrolador.
 > - NMI: Esta excepción se utiliza para eventos críticos que requieren una respuesta inmediata, como fallas de energía o eventos externos importantes. El NMI tiene la capacidad de interrumpir cualquier tarea en ejecución y no puede ser deshabilitado o enmascarado.
 > - HARDFAULT: Esta excepción engloba las interrupciones MemManage, BusFault y Usage Fault, las cuales se ocasionan consecuencia de un fallo en el hardware.
-> 
+
 10. Describa las funciones principales de la pila. ¿Cómo resuelve la arquitectura el llamado a funciones y su retorno?
 > La pila es una memoria tipo LIFO que se encarga de guardar el entorno de ejecución del microcontrolador cuando occurre un salto en su ejecución, para esto utiliza las instrucciones PUSH y POP. 
 > 
 > En caso de que ocurra un salto, mediante la instrucción PUSH se coloca el entorno de ejecución al final de la pila y cuando se retorna del salto se utiliza la instrucción POP, la cual extra la última entrada a la pila (por ser una memoria tipo LIFO) y vuelve a cargarse el entorno del microcontrolador en sus registros. 
 > 
 > Es importante aclarar que, en caso de un salto, el valor del contador de programa (CP) se guarda en el registro link register (LR) para que ocurre el retorno de dicho salto, el microcontrolador pueda continuar la ejecución como lo estaba haciendo.
+
 11. Describa la secuencia de reset del microprocesador. 
 > Luego de la posición cero de la memoria flash (que es donde se encuentra el valor del MSP) se encuentra el NVIC (vector de interrupciones), donde la primera posición de este vector contiene la dirección de memoria en la que se encuentra el inicio de la función de reset dentro de la memoria flash (que debe cargarse en el PC). Esta función se encarga de la inicialización de periféricos del fabricante, CMSIS, BSP, entre otras cosas. Una vez finalizado esto, la función de reset llama a la función main para iniciar su ejecución.
+
 12. ¿Qué entiende por “core peripherals”? ¿Qué diferencia existe entre estos y el resto de los periféricos?
 > Los core peripherals son todos aquellos periféricos que, en conjunto con el nucleo del procesador conforman un microcontrolador Cortex M. Estos son diseñados por el proveedor de la IP y dependen de la microarquitectura del procesador, entre los que se encuentran NVIC, MPU, WIC, FPU , embedded trace macrocell (ETM), debug access port, entre otros.
 > 
 > Por otro lado, cada fabricante de silicio que utilice la IP Cortex-M puede agregar perifericos que se comuniquen con el procesador según lo considere para su aplicación, entre los que se encuentran ADC, UART, SPI, USB, CAN, etc.
-> 
+
+
 13. ¿Cómo se implementan las prioridades de las interrupciones? Dé un ejemplo
 > Respuesta
+
 14. ¿Qué es el CMSIS? ¿Qué función cumple? ¿Quién lo provee? ¿Qué ventajas aporta?
 > Es un proyecto de ARM que permite que la programación de microcontroladorea basados en Cortex-M sea sencilla y migrable a productos de diferentes fabricantes, al proporcionar archivos y una API para las funciones estándar del procesador Cortex-M. Las ventajas que CMSIS aporta son:
 > - Mayor reutilización de software : facilita la reutilización de código de software en diferentes proyectos de Cortex-M, lo que reduce el tiempo de comercialización y los esfuerzos de verificación.
 > - Mejor compatibilidad de software: al tener una infraestructura de software consistente (por ejemplo, API para funciones de acceso al núcleo del procesador, método de inicialización del sistema, estilo común para definir periféricos), el software de varias fuentes puede trabajar en conjunto, lo que reduce el riesgo en la integración.
 > - Independiente del toolchain: los driver de dispositivos compatibles con CMSIS se pueden usar con varias herramientas de compilación.
+
 15. Cuando ocurre una interrupción, asumiendo que está habilitada ¿Cómo opera el microprocesador para atender a la subrutina correspondiente? Explique con un ejemplo
 > Respuesta
 16. ¿Cómo cambia la operación de stacking al utilizar la unidad de punto flotante? 
@@ -81,7 +89,7 @@
 > Un sistema operativo puede configurar la MPU para proteger los datos utilizados por el kernel del sistema operativo y otras tareas privilegiadas, evitando que los programas de usuario no confiables los dañen. Opcionalmente, el sistema operativo también puede aislar regiones de memoria entre diferentes tareas de usuario. Estas medidas permiten una mejor detección de fallas del sistema y permiten que los sistemas sean más robustos en el manejo de condiciones de error.
 > 
 > La MPU también se puede usar para hacer que las regiones de la memoria sean de solo lectura, para evitar el borrado accidental de datos en SRAM o la sobrescritura del código de instrucciones. De forma predeterminada, la MPU está deshabilitada y las aplicaciones que no requieren una función de protección de memoria no tienen que inicializarla.
-> 
+
 20. ¿Cuántas regiones pueden configurarse como máximo? ¿Qué ocurre en caso de haber solapamientos de las regiones? ¿Qué ocurre con las zonas de memoria no cubiertas por las regiones definidas?
 > Respuesta
 21. ¿Para qué se suele utilizar la excepción PendSV? ¿Cómo se relaciona su uso con el resto de las excepciones? Dé un ejemplo
