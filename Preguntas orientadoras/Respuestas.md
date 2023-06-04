@@ -116,7 +116,9 @@
 > Por ejemplo, el sufijo "B" indica que la instrucción opera con palabras de un byte. Un caso de uso es la instrucción "LDRB", la cual carga un byte de memoria en un registro.
 
 2. ¿Para qué se utiliza el sufijo ‘s’? Dé un ejemplo
-> Respuesta
+> El sufijo "S" hace que la instrucción actualice las banderas de estado del registro APSR, las cuales indican información sobre el resultado de la operación, como el resultado cero, desbordamiento, acarreo, etc. Esto permite tomar decisiones condicionales basadas en el estado de las banderas en instrucciones posteriores.
+> Por ejemplo, la instrucción ADDS R1, R2, R3 suma el contenido de los registros R2 y R3 y almacena el resultado en el registro R1. Además, actualiza las banderas de estado según el resultado de la suma.
+
 3. ¿Qué utilidad tiene la implementación de instrucciones de aritmética saturada? Dé un ejemplo con operaciones con datos de 8 bits.
 > Respuesta
 4. Describa brevemente la interfaz entre assembler y C ¿Cómo se reciben los argumentos de las funciones? ¿Cómo se devuelve el resultado? ¿Qué registros deben guardarse en la pila antes de ser modificados?
