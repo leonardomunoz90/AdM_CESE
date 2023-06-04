@@ -90,7 +90,9 @@
 17. Explique las características avanzadas de atención a interrupciones: tail chaining y late arrival.
 > Respuesta
 18. ¿Qué es el systick? ¿Por qué puede afirmarse que su implementación favorece la portabilidad de los sistemas operativos embebidos?
-> Respuesta
+> SysTick es un temporizador utilizado en muchos sistemas operativos embebidos para proporcionar una base de tiempo y generar interrupciones periódicas, por ejemplo, en freeRTOS donde proporciona una forma de medir el tiempo y ejecutar código en intervalos regulares. Además, favorece la portabilidad de los sistemas operativos embebidos por ser estándar de la arquitectura Cortex-M.
+
+
 19. ¿Qué funciones cumple la unidad de protección de memoria (MPU)? 
 > La MPU es un dispositivo programable que monitorea las transacciones del bus. Esto permite dividir el espacio de memoria en varias regiones y definir los permisos de acceso para cada una de ellas. Cuando se viola una regla de acceso, se genera una excepción de falla al controlador de excepciones.
 > 
