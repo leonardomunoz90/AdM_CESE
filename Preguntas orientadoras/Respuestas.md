@@ -36,7 +36,14 @@
 > De esta manera, la pila utilizada por el kernel del sistema operativo se puede separar de ese uso por parte de las tareas de la aplicación, lo que permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Además permite una mayor confiabilidad y un uso óptimo del espacio de la pila. Para aplicaciones simples sin un sistema operativo, el stack pointer puede usar directamente el MSP.
 
 6. Describa los diferentes modos de privilegio y operación del Cortex M, sus relaciones y como se conmuta de uno al otro. Describa un ejemplo en el que se pasa del modo privilegiado a no priviligiado y nuevamente a privilegiado.
+> Cuando el microcontrolador cortex se encuentra en estado de operación Thumb, es decir, cuando está corriendo el código de programa, tiene dos posibles estados de operación:
+> - Handler mode: Es un estado con nivel de acceso privilegiado y es el que se asigna a un sistema operativo dentro del microcontrolador o a las rutinas atención de excepciones.
+> - Thread mode: Es el asignado para la ejecución de las tareas de usuario, puede tener modo de acceso privilegiado o no privilegiado, esto dependerá del estado del bit nPRV dentro del registro de control.  De tal manera que cuando el bit nPRV se está en modo privilegiado y cuando se coloca un 1 se está en modo no privilegiado
 > 
+> Una manera de generar la secuencia requerida es la siguiente manera:
+> - Por defecto, el microcontrolador inicia en modo privilegiado, pero este puede pasar a modo no privilegiado asignando un 1 en el bit nPRV del registro CONTROL. 
+> - Para volver a modo privilegiado, el microcontrolador no permitirá poner en cero el bit nPRV de manera directa. Sino que eso debe hacerse llamando al manejador de excepción SVC, donde es posible ejecutar código en modo privilegiado. Una vez dentro del manejador de interrupción se coloca en cero el bit nPRV para volver a modo privilegiado.
+
 7. ¿Qué se entiende por modelo de registros ortogonal? Dé un ejemplo
 > En el caso de los microcontroladores Cortex-M, el modelo de registro ortogonal permite acceder a los registros de propósito general desde cualquier nivel de privilegio, lo que proporciona flexibilidad y facilidad de uso. Por ejemplo, en el caso del registro de SP, ya sea que este apunte a MSP o PSP (inidicado por el bit SPSEL del registro de control) , le es totalmente transparece ya que puede hacerlo en ambos niveles de privilegios (si bien no es muy recomendable utilizar MSP en modo no privilegiado).
 
