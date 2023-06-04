@@ -111,7 +111,10 @@
 ### ISA
 
 1. ¿Qué son los sufijos y para qué se los utiliza? Dé un ejemplo
-> Respuesta
+> Los sufijos se agregan a la instrucción base de assembly mediante el uso de letras después del mnemónico y se utilizan para proporcionar variantes de las instrucciones básicas, permitiendo operaciones específicas y más flexibilidad en la programación.
+> 
+> Por ejemplo, el sufijo "B" indica que la instrucción opera con palabras de un byte. Un caso de uso es la instrucción "LDRB", la cual carga un byte de memoria en un registro.
+
 2. ¿Para qué se utiliza el sufijo ‘s’? Dé un ejemplo
 > Respuesta
 3. ¿Qué utilidad tiene la implementación de instrucciones de aritmética saturada? Dé un ejemplo con operaciones con datos de 8 bits.
