@@ -42,7 +42,11 @@
 8. ¿Qué ventajas presenta el uso de intrucciones de ejecución condicional (IT)? Dé un ejemplo
 > Respuesta
 9. Describa brevemente las excepciones más prioritarias (reset, NMI, Hardfault). 
-> Respuesta
+> ARM define 15 interrupciones que se encuentran en las primeras posiciones de NVIC (las siguientes están definidas por cada fabricante que utilice la IP), entre las cuales se encuentran 3 cuya prioridad está establecida con un valor más importante que el resto de las excepciones y no puede modificarse por su gran importancia. Estas son:
+> - RESET: es generada al encender o reiniciar el microcontrolador. Cuando se produce el reset, se restablecen todos los registros y se borra la memoria del microcontrolador.
+> - NMI: Esta excepción se utiliza para eventos críticos que requieren una respuesta inmediata, como fallas de energía o eventos externos importantes. El NMI tiene la capacidad de interrumpir cualquier tarea en ejecución y no puede ser deshabilitado o enmascarado.
+> - HARDFAULT: Esta excepción engloba las interrupciones MemManage, BusFault y Usage Fault, las cuales se ocasionan consecuencia de un fallo en el hardware.
+> 
 10. Describa las funciones principales de la pila. ¿Cómo resuelve la arquitectura el llamado a funciones y su retorno?
 > La pila es una memoria tipo LIFO que se encarga de guardar el entorno de ejecución del microcontrolador cuando occurre un salto en su ejecución, para esto utiliza las instrucciones PUSH y POP. 
 > 
