@@ -127,6 +127,9 @@
 > La aritmética saturada evita este desbordamiento y mantiene el resultado dentro de un rango permitido. Por ejemplo, para variables no signadas de 8 bits mantiene su valor entre 0 y 255, en caso de un desbordamiento, el valor se mantiene en estos valores límites.
 
 4. Describa brevemente la interfaz entre assembler y C ¿Cómo se reciben los argumentos de las funciones? ¿Cómo se devuelve el resultado? ¿Qué registros deben guardarse en la pila antes de ser modificados?
-> Respuesta
+> Generalmente los primeros argumentos de una función se pasan en los registros R0, R1, R2 y R3. Si hay más argumentos, se colocan en la pila en orden inverso. 
+> 
+> El resultado de una función mayoritariamente se devuelve en el registro R0. En caso de que el resultado sea una estructura o arreglo, se puede pasar un puntero como argumento y la función puede modificar directamente los datos a través del puntero.
+
 5. ¿Qué es una instrucción SIMD? ¿En qué se aplican y que ventajas reporta su uso? Dé un ejemplo.
 > Respuesta
