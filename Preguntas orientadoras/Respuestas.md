@@ -38,7 +38,7 @@
 6. Describa los diferentes modos de privilegio y operación del Cortex M, sus relaciones y como se conmuta de uno al otro. Describa un ejemplo en el que se pasa del modo privilegiado a no priviligiado y nuevamente a privilegiado.
 > 
 7. ¿Qué se entiende por modelo de registros ortogonal? Dé un ejemplo
-> En el caso de los microcontroladores Cortex-M, el modelo de registro ortogonal permite acceder a los registros desde cualquier nivel de privilegio, lo que proporciona flexibilidad y facilidad de uso. Por ejemplo, en el caso del registro de SP, ya sea que este apunte a MSP o PSP (inidicado por el bit SPSEL del registro de control) , le es totalmente transparece ya que puede hacerlo en ambos niveles de privilegios (si bien no es muy recomendable utilizar MSP en modo no privilegiado).
+> En el caso de los microcontroladores Cortex-M, el modelo de registro ortogonal permite acceder a los registros de propósito general desde cualquier nivel de privilegio, lo que proporciona flexibilidad y facilidad de uso. Por ejemplo, en el caso del registro de SP, ya sea que este apunte a MSP o PSP (inidicado por el bit SPSEL del registro de control) , le es totalmente transparece ya que puede hacerlo en ambos niveles de privilegios (si bien no es muy recomendable utilizar MSP en modo no privilegiado).
 
 8. ¿Qué ventajas presenta el uso de intrucciones de ejecución condicional (IT)? Dé un ejemplo
 > Respuesta
