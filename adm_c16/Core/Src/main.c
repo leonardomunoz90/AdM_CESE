@@ -206,10 +206,18 @@ int main(void)
   int32_t vectorMax_C[5]={1,10,-20,-5,5};
   int32_t maxValueIndex_C = max (vectorMax_C, 5);
 
-  //downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
+  int32_t vectorDownSampleIn_C[30]={
+		  0,1,2,3,4,5,6,7,8,9,
+		  10,11,12,13,14,15,16,17,18,19,
+		  20,21,22,23,24,25,26,27,28,29
+  };
+  int32_t vectorDownSampleOut_C[24];
+  downsampleM (vectorDownSampleIn_C, vectorDownSampleOut_C, 30, 5);
 
   uint16_t vectorInv_C[6]={0,10,20,30,40,50};
   invertir (vectorInv_C, 6);
+
+  //Verificación de funciones en ASM
 
   uint32_t vector[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
   asm_zeros(vector,5);
@@ -514,7 +522,20 @@ int32_t max (int32_t * vectorIn, uint32_t longitud){
 }
 
 void downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N){
+	int sampleCounter=0;
+	int decimatedSamples=0;
 
+	for(int i=0;i<longitud;i++){
+
+		if(sampleCounter==N-1){
+			sampleCounter=0;
+			decimatedSamples++;
+			i++;	//Saltea la muestra
+		}
+
+		vectorOut[i-decimatedSamples]=vectorIn[i];
+		sampleCounter++;
+	}
 }
 
 void invertir (uint16_t * vector, uint32_t longitud){
