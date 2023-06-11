@@ -174,6 +174,43 @@ int main(void)
 
   const uint32_t Resultado = asm_sum (5, 3);
 
+  //Verificación de funciones en C
+
+  uint32_t vectorZeros_C[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
+  zeros (vectorZeros_C,5);
+
+  uint32_t vectorProdEsc32In_C[5]={0x1111,0x2222,0x4444,0x8888,0xFFFF};
+  uint32_t vectorProdEsc32Out_C[5];
+  productoEscalar32 (vectorProdEsc32In_C, vectorProdEsc32Out_C, 5, 0xF);
+
+  uint16_t vectorProdEsc16In_C[5]={0x11,0x22,0x444,0x888,0xFFF};
+  uint16_t vectorProdEsc16Out_C[5];
+  productoEscalar16 (vectorProdEsc16In_C, vectorProdEsc16Out_C, 5, 0xF);
+
+  uint16_t vectorProdEsc12In_C[5]={0x11,0x22,0x444,0x888,0xFFF};
+  uint16_t vectorProdEsc12Out_C[5];
+  productoEscalar12 (vectorProdEsc12In_C, vectorProdEsc12Out_C, 5, 0xF);
+
+  uint16_t vectorVentanaIn_C[15]={
+		  10,10,10,10,10,
+		  10,10,10,10,10,
+		  10,10,10,10,10
+  };
+  uint16_t vectorVentanaOut_C[15];
+  filtroVentana10(vectorVentanaIn_C, vectorVentanaOut_C,15);
+
+  int32_t vectorPack32In_C[5]={0x1111,0x22222,0x444444,0x8888888,0x800FFFFF};
+  int16_t vectorPack32Out_C[5];
+  pack32to16 (vectorPack32In_C,vectorPack32Out_C, 5);
+
+  int32_t vectorMax_C[5]={1,10,-20,-5,5};
+  int32_t maxValueIndex_C = max (vectorMax_C, 5);
+
+  //downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
+
+  uint16_t vectorInv_C[6]={0,10,20,30,40,50};
+  invertir (vectorInv_C, 6);
+
   uint32_t vector[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
   asm_zeros(vector,5);
 
@@ -424,13 +461,11 @@ void productoEscalar16 (uint16_t * vectorIn, uint16_t * vectorOut, uint32_t long
 }
 
 void productoEscalar12 (uint16_t * vectorIn, uint16_t * vectorOut, uint32_t longitud, uint16_t escalar){
-	uint16_t temp;
 	for(;longitud;longitud--){
-		temp=escalar*vectorIn[longitud-1];
-		if(temp>LIM_12BITS){
+		vectorOut[longitud-1] = escalar*vectorIn[longitud-1];
+
+		if(vectorOut[longitud-1]>LIM_12BITS){
 			vectorOut[longitud-1]=LIM_12BITS;
-		}else{
-			vectorOut[longitud-1]=escalar*vectorOut[longitud-1];
 		}
 	}
 }
@@ -458,8 +493,7 @@ void filtroVentana10(uint16_t * vectorIn, uint16_t * vectorOut, uint32_t longitu
 
 void pack32to16 (int32_t * vectorIn, int16_t *vectorOut, uint32_t longitud){
 	for(;longitud;longitud--){
-		uint32_t temp = vectorIn[longitud-1] & MASK_16_MSB_BITS;
-		vectorOut[longitud-1]=(uint16_t) (temp >> 16);
+		vectorOut[longitud-1]=(uint16_t) (vectorIn[longitud-1]/65536); //usar shift con signo en asm
 	}
 }
 
@@ -494,7 +528,7 @@ void invertir (uint16_t * vector, uint32_t longitud){
 	do{
 		temp = vector[flipTimes-1];
 		vector[flipTimes-1]=vector[longitud-flipTimes];
-		vector[longitud-flipTimes-1] =temp;
+		vector[longitud-flipTimes] =temp;
 		flipTimes--;
 
 	}while(flipTimes);
