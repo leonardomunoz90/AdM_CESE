@@ -219,8 +219,20 @@ int main(void)
 
   //Verificación de funciones en ASM
 
-  uint32_t vector[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
-  asm_zeros(vector,5);
+  uint32_t vectorZeros_ASM[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
+  asm_zeros(vectorZeros_ASM,5);
+
+  uint32_t vectorProdEsc32In_ASM[5]={0x1111,0x2222,0x4444,0x8888,0xFFFF};
+  uint32_t vectorProdEsc32Out_ASM[5];
+  asm_productoEscalar32 (vectorProdEsc32In_ASM, vectorProdEsc32Out_ASM, 5, 0xF);
+
+  uint16_t vectorProdEsc16In_ASM[5]={0x11,0x22,0x444,0x888,0xFFF};
+  uint16_t vectorProdEsc16Out_ASM[5];
+  productoEscalar16 (vectorProdEsc16In_ASM, vectorProdEsc16Out_ASM, 5, 0xF);
+
+  uint16_t vectorProdEsc12In_ASM[5]={0x11,0x22,0x444,0x888,0xFFF};
+  uint16_t vectorProdEsc12Out_ASM[5];
+  productoEscalar12 (vectorProdEsc12In_ASM, vectorProdEsc12Out_ASM, 5, 0xF);
 
   /* USER CODE END 2 */
 
