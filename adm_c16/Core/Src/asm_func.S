@@ -119,7 +119,7 @@
 
      	ldrh r4,[r0],2		@carga el contenido de vectorIn en r4 (media palabra)y aumenta la dirección de r0 en 2 bytes
      	mul r4,r4,r3		@r4=r4*r3, r3 es el escalar
-    	strh r4, [r1],4		@pone el contenido de r4 en *r1 y aumenta en 4 r0 por ser de 32 bits
+    	strh r4, [r1],2		@pone el contenido de r4 en *r1 y aumenta en 2 r0 por ser de 16 bits
 
 		subs r2,#1
 		bne _for_prodEsc16		@vuele al for si longitud no llega a cero
@@ -148,7 +148,7 @@
      	ldrh r4,[r0],2		@carga el contenido de vectorIn en r4 (media palabra)y aumenta la dirección de r0 en 2 bytes
      	mul r4,r4,r3		@r4=r4*r3, r3 es el escalar
      	usat r4,#12,r4		@saturo el valor de r4 en 12 bits y lo vuelvo a almacenar en r4
-    	strh r4, [r1],4		@pone el contenido de r4 en *r1 y aumenta en 4 r0 por ser de 32 bits
+    	strh r4, [r1],2		@pone el contenido de r4 en *r1 y aumenta en 2 r0 por ser de 16 bits
 
 		subs r2,#1
 		bne _for_prodEsc12		@vuele al for si longitud no llega a cero
@@ -156,3 +156,32 @@
 	pop {r4}
     bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
                 @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   void asm_filtroVentana10(uint16_t * vectorIn, uint16_t * vectorOut, uint32_t longitudVectorIn);
+
+@ Parametros recibidos:
+@   r0: dirección del vector de entrada
+@   r1: dirección del vector de salida
+@   r2: longitud
+@
+@ Valor de retorno: ---
+
+.thumb_func
+    asm_filtroVentana10:
+    @push {r4}
+     _for_filtroVentana:
+
+     	ldrh r4,[r0],2		@carga el contenido de vectorIn en r4 (media palabra)y aumenta la dirección de r0 en 2 bytes
+     	mul r4,r4,r3		@r4=r4*r3, r3 es el escalar
+     	usat r4,#12,r4		@saturo el valor de r4 en 12 bits y lo vuelvo a almacenar en r4
+    	strh r4, [r1],4		@pone el contenido de r4 en *r1 y aumenta en 4 r0 por ser de 32 bits
+
+		subs r2,#1
+		bne _for_filtroVentana		@vuele al for si longitud no llega a cero
+
+	@pop {r4}
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+

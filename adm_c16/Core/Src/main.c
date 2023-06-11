@@ -228,11 +228,19 @@ int main(void)
 
   uint16_t vectorProdEsc16In_ASM[5]={0x11,0x22,0x444,0x888,0xFFF};
   uint16_t vectorProdEsc16Out_ASM[5];
-  productoEscalar16 (vectorProdEsc16In_ASM, vectorProdEsc16Out_ASM, 5, 0xF);
+  asm_productoEscalar16 (vectorProdEsc16In_ASM, vectorProdEsc16Out_ASM, 5, 0xF);
 
   uint16_t vectorProdEsc12In_ASM[5]={0x11,0x22,0x444,0x888,0xFFF};
   uint16_t vectorProdEsc12Out_ASM[5];
-  productoEscalar12 (vectorProdEsc12In_ASM, vectorProdEsc12Out_ASM, 5, 0xF);
+  asm_productoEscalar12 (vectorProdEsc12In_ASM, vectorProdEsc12Out_ASM, 5, 0xF);
+
+  uint16_t vectorVentanaIn_ASM[15]={
+		  10,10,10,10,10,
+		  10,10,10,10,10,
+		  10,10,10,10,10
+  };
+  uint16_t vectorVentanaOut_ASM[15];
+  //asm_filtroVentana10(vectorVentanaIn_ASM, vectorVentanaOut_ASM,15);
 
   /* USER CODE END 2 */
 
