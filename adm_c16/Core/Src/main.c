@@ -240,7 +240,7 @@ int main(void)
 		  10,10,10,10,10
   };
   uint16_t vectorVentanaOut_ASM[15];
-  //asm_filtroVentana10(vectorVentanaIn_ASM, vectorVentanaOut_ASM,15);
+  asm_filtroVentana10(vectorVentanaIn_ASM, vectorVentanaOut_ASM,15);
 
   /* USER CODE END 2 */
 
