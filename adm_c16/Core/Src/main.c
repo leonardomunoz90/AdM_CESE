@@ -242,6 +242,21 @@ int main(void)
   uint16_t vectorVentanaOut_ASM[15];
   asm_filtroVentana10(vectorVentanaIn_ASM, vectorVentanaOut_ASM,15);
 
+  int32_t vectorPack32In_ASM[5]={0x1111,0x22222,0x444444,0x8888888,0x800FFFFF};
+  int16_t vectorPack32Out_ASM[5];
+  asm_pack32to16 (vectorPack32In_ASM,vectorPack32Out_ASM, 5);
+
+  int32_t vectorMax_ASM[5]={1,10,-20,-5,5};
+  int32_t maxValueIndex_ASM = asm_max (vectorMax_ASM, 5);
+
+  int32_t vectorDownSampleIn_ASM[30]={
+		  0,1,2,3,4,5,6,7,8,9,
+		  10,11,12,13,14,15,16,17,18,19,
+		  20,21,22,23,24,25,26,27,28,29
+  };
+  int32_t vectorDownSampleOut_ASM[24];
+  //asm_downsampleM (vectorDownSampleIn_ASM, vectorDownSampleOut_ASM, 30, 5);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -521,14 +536,15 @@ void filtroVentana10(uint16_t * vectorIn, uint16_t * vectorOut, uint32_t longitu
 
 void pack32to16 (int32_t * vectorIn, int16_t *vectorOut, uint32_t longitud){
 	for(;longitud;longitud--){
-		vectorOut[longitud-1]=(uint16_t) (vectorIn[longitud-1]/65536); //usar shift con signo en asm
+		vectorOut[longitud-1]=(int16_t) ((vectorIn[longitud-1]&MASK_16_MSB_BITS)>>16); //usar shift con signo en asm
 	}
 }
 
 int32_t max (int32_t * vectorIn, uint32_t longitud){
 
-	int32_t maxValue = 0x80000000;
-	int32_t maxIndex = 0;
+	int32_t maxValue = vectorIn[longitud-1];
+	int32_t maxIndex = longitud-1;
+	longitud--;
 
 	for(;longitud;longitud--){
 

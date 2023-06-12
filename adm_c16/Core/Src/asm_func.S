@@ -227,3 +227,76 @@
     bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
                 @ es la direccion, en el codigo del programa
 
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   void asm_pack32to16 (int32_t * vectorIn, int16_t *vectorOut, uint32_t longitud);
+
+@ Parametros recibidos:
+@   r0: dirección del vector de entrada
+@   r1: dirección del vector de salida
+@   r2: longitud
+@
+@ Valor de retorno: ---
+
+.thumb_func
+    asm_pack32to16:
+     _for_pack:
+
+     ldr r3,[r0],4		@obtengo el valor de vectIn
+     lsr r3,16			@shift 16 bits a la derecha para ontener los mas significativos
+     strh r3,[r1],2	@se guarda solamente media palabra
+     subs r2,#1			@se disminuye en 1 longitud para controlar el ciclo
+     bne _for_pack		@si es igual a cero hay que salir del lazo
+
+
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   int32_t asm_max (int32_t * vectorIn, uint32_t longitud);
+
+@ Parametros recibidos:
+@   r0: dirección del vector de entrada
+@   r1: longitud
+@
+@ Valor de retorno: r0 indice de valor máximo
+
+.thumb_func
+
+	push {r4}
+
+    asm_max:
+
+	sub r1,#1				@para usarlo directamente como indice
+
+	ldr r2,[r0,r1,lsl 2]	@cargo lo que está en la ultima posición y lo multiplico por 4 por ser 4 bytes
+							@r2 se va a usar para mantener el valor máximo
+
+	mov r3,r1				@r3 se va a usar para guardar el indice del valor máximo
+
+     _for_max:
+
+	 subs r1,#1
+	 bmi end_max_loop			@si el resultado es negativo significa que ya se recorrio el array completo
+
+     ldr r4,[r0,r1,lsl 2]		@obtengo el valor de vectIn
+     cmp r4,r2
+     blt _not_greater			@en caso de que r4 no sea mayor se salta la parte de asignación
+
+     mov r2,r4					@asigno nuevo cvalor maximo
+     mov r3,r1					@asigno nuevo indice
+
+	_not_greater:
+     b _for_max					@si es igual a cero hay que salir del lazo
+
+     end_max_loop:
+
+     mov r0,r3			@asigno a r0 el valor de retorno (indice del mayor)
+
+     pop {r4}
+
+
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
