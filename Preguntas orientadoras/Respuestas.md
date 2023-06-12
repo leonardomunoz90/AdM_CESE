@@ -132,4 +132,9 @@
 > El resultado de una función mayoritariamente se devuelve en el registro R0. En caso de que el resultado sea una estructura o arreglo, se puede pasar un puntero como argumento y la función puede modificar directamente los datos a través del puntero.
 
 5. ¿Qué es una instrucción SIMD? ¿En qué se aplican y que ventajas reporta su uso? Dé un ejemplo.
-> Respuesta
+> Las instrucciones SIMD (Single Instruction, Multiple Data) son un conjunto de instrucciones diseñadas para realizar operaciones paralelas en datos de múltiples elementos en una única instrucción. Estas instrucciones están especialmente optimizadas para trabajar con vectores y matrices de datos, lo que permite acelerar el procesamiento de operaciones numéricas y mejorar el rendimiento de cálculos intensivos.
+>
+> Cada instrucción SIMD puede procesar múltiples elementos de datos en un solo ciclo de reloj, lo que mejora la eficiencia y el rendimiento en comparación con instrucciones que procesan un solo elemento a la vez.
+> 
+> Por ejemplo, las instrucciones SIMD permite sumar 4 pares de números de 8 bits en una única instrucción ADD8, a la que además se le puede agregar prefijos para indicar si los operandos son signados (SADD8) o no signados (UADD8) e implementar saturación (QADD8 y UQADD8).
+
