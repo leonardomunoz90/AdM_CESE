@@ -37,6 +37,10 @@
 #define WINDOW_SIZE 11
 #define HALF_WINDOW 5
 #define MASK_16_MSB_BITS 0xFFFF0000
+
+#define ECO_VECTOR_LENGTH 4096
+#define ECO_SAMPLE_DELAY 882
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -77,6 +81,7 @@ void pack32to16 (int32_t * vectorIn, int16_t *vectorOut, uint32_t longitud);
 int32_t max (int32_t * vectorIn, uint32_t longitud);
 void downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
 void invertir (uint16_t * vector, uint32_t longitud);
+void addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay);
 
 /* USER CODE END PFP */
 
@@ -155,6 +160,8 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+  DWT->CTRL |= 1 << DWT_CTRL_CYCCNTENA_Pos;
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -217,6 +224,18 @@ int main(void)
   uint16_t vectorInv_C[6]={0,10,20,30,40,50};
   invertir (vectorInv_C, 6);
 
+  int16_t ecoVectorSamples_C[ECO_VECTOR_LENGTH];
+
+  //La idea de asignar así el vector es para utilizar el rango negativo
+  for(int i=-ECO_VECTOR_LENGTH/2 ; i< (ECO_VECTOR_LENGTH/2) ; i++){
+	  ecoVectorSamples_C[ECO_VECTOR_LENGTH/2+i]=i;
+  }
+
+  DWT->CYCCNT = 0;
+  addEcoVector(ecoVectorSamples_C,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
+  const volatile uint32_t CiclosEco_C = DWT->CYCCNT;
+
+
   //Verificación de funciones en ASM
 
   uint32_t vectorZeros_ASM[5]={0xFF,0xFF,0xFF,0xFF,0xFF};
@@ -256,6 +275,20 @@ int main(void)
   };
   int32_t vectorDownSampleOut_ASM[24];
   //asm_downsampleM (vectorDownSampleIn_ASM, vectorDownSampleOut_ASM, 30, 5);
+
+  uint16_t vectorInv_ASM[6]={0,10,20,30,40,50};
+  //asm_invertir (vectorInv_ASM, 6);
+
+  int16_t ecoVectorSamples_ASM[ECO_VECTOR_LENGTH];
+
+  //La idea de asignar así el vector es para utilizar el rango negativo
+  for(int i=-ECO_VECTOR_LENGTH/2 ; i< (ECO_VECTOR_LENGTH/2) ; i++){
+	  ecoVectorSamples_ASM[ECO_VECTOR_LENGTH/2+i]=i;
+  }
+
+  DWT->CYCCNT = 0;
+  asm_addEcoVector(ecoVectorSamples_ASM,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
+  const volatile uint32_t CiclosEco_ASM = DWT->CYCCNT;
 
   /* USER CODE END 2 */
 
@@ -590,6 +623,13 @@ void invertir (uint16_t * vector, uint32_t longitud){
 
 	}while(flipTimes);
 
+}
+
+void addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay){
+
+	for(int i=sampleDelay ; i<longitud ;i++){
+		vector[i] = vector[i-sampleDelay]/2 + vector[i];
+	}
 }
 
 /* USER CODE END 4 */

@@ -14,6 +14,7 @@
 .global asm_max
 .global asm_downsampleM
 .global asm_invertir
+.global asm_addEcoVector
 
 .equ WINDOW_SIZE, 11
 .equ HALF_WINDOW, 5
@@ -264,10 +265,9 @@
 @ Valor de retorno: r0 indice de valor máximo
 
 .thumb_func
-
-	push {r4}
-
     asm_max:
+
+    push {r4}
 
 	sub r1,#1				@para usarlo directamente como indice
 
@@ -296,6 +296,53 @@
      mov r0,r3			@asigno a r0 el valor de retorno (indice del mayor)
 
      pop {r4}
+
+
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   void asm_addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay);
+
+@ Parametros recibidos:
+@   r0: dirección del vector
+@   r1: longitud
+@	r2: delay en muestras, en este caso 882
+@
+@ Valor de retorno: r0 indice de valor máximo
+
+.thumb_func
+
+    asm_addEcoVector:
+
+    push {r4-r6}			@r5 tendrá el valor en 0 del array
+    						@r6 tendrá el valor con offset en 882 muestras
+
+	mov r3,#0				@r3 analogo a i
+	mov r4,r2				@cargo en r4 882
+
+     _for_eco_loop:
+
+     	ldrsh r5,[r0,r3,lsl #1]	@cargo lo que está en la posición i y lo multiplico por 2 por ser datos de 16 bits
+								@r2 se va a usar para mantener el valor de delay
+
+		ldrsh r6,[r0,r4,lsl #1]	@cargo lo que está en la posición 882+i y lo multiplico por 2 por ser datos de 16 bits
+								@r2 se va a usar para mantener el valor de delay
+
+		add r6,r6,r5,asr #1		@equivalente a N1 = N1 + N2>>1
+		ssat r6,16,r6
+
+		strh r6,[r0,r4,lsl 1]  	@guardo resultado en 882+i y lo multiplico por 2 por ser datos de 16 bits
+
+		add r3,#1
+		add r4,#1
+
+		cmp r4,r1
+
+	 bne _for_eco_loop			@si son diferentes longitud e i sigo con el lazo
+
+     pop {r4-r6}
 
 
     bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
