@@ -274,10 +274,10 @@ int main(void)
 		  20,21,22,23,24,25,26,27,28,29
   };
   int32_t vectorDownSampleOut_ASM[24];
-  //asm_downsampleM (vectorDownSampleIn_ASM, vectorDownSampleOut_ASM, 30, 5);
+  asm_downsampleM (vectorDownSampleIn_ASM, vectorDownSampleOut_ASM, 30, 5);
 
   uint16_t vectorInv_ASM[6]={0,10,20,30,40,50};
-  //asm_invertir (vectorInv_ASM, 6);
+  asm_invertir (vectorInv_ASM, 6);
 
   int16_t ecoVectorSamples_ASM[ECO_VECTOR_LENGTH];
 
@@ -591,20 +591,23 @@ int32_t max (int32_t * vectorIn, uint32_t longitud){
 }
 
 void downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N){
+
 	int sampleCounter=0;
-	int decimatedSamples=0;
+	int currentInSample=0;
+	int currentOutSample=0;
 
-	for(int i=0;i<longitud;i++){
-
+	do{
 		if(sampleCounter==N-1){
 			sampleCounter=0;
-			decimatedSamples++;
-			i++;	//Saltea la muestra
+			currentInSample++;	//saltea muestra de entrada actual
 		}
 
-		vectorOut[i-decimatedSamples]=vectorIn[i];
+		vectorOut[currentOutSample]=vectorIn[currentInSample];
 		sampleCounter++;
-	}
+		currentInSample++;
+		currentOutSample++;
+
+	}while(currentInSample<longitud);
 }
 
 void invertir (uint16_t * vector, uint32_t longitud){

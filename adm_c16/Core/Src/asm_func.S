@@ -303,6 +303,98 @@
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @ Prototipo en "C":
+@   asm_downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
+
+@ Parametros recibidos:
+@   r0: dirección del vector de entrada
+@   r1: dirección del vector de salida
+@   r2: longitud
+@   r3: factor de diezmado
+@
+@ Valor de retorno: -
+
+.thumb_func
+    asm_downsampleM:
+
+    push {r4-r7}
+
+	mov r4,#0	@r4 representa la variable sampleCounter
+	mov r5,#0	@r5 representa la variable currentInSample
+	mov r6,#0	@r6 representa la variable currentOutSample
+
+				@r7 va a ser el contenido en la dirrecion actual del vector de entrada
+				@r8 va a ser el contenido en la dirrecion actual del vector de salida
+
+	sub r3,#1	@utilizado en el condicional del if
+
+	_downsample_loop:
+
+		cmp r4,r3
+		bne _comp_downsample_not_equal
+		mov r4,#0
+		add r5,#1			@salteo de posición de 32 bits
+
+		_comp_downsample_not_equal:
+
+		@acá va la asignación
+
+		ldr r7,[r0,r5,lsl 2]		@cargo valor actual del vector de entrada
+		str r7,[r1,r6,lsl 2]		@lo asigno a la posición actual del vector de salida
+
+		add r4,#1			@aumento sampleCounter
+		add r5,#1			@aumento currentInSample
+		add r6,#1			@aumento currentOutSample
+
+		cmp r5,r2
+		blo _downsample_loop
+
+
+	pop {r4-r7}
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   void asm_invertir (uint16_t * vector, uint32_t longitud);
+
+@ Parametros recibidos:
+@   r0: dirección del vector de entrada
+@   r1: longitud del vector
+@
+@ Valor de retorno: -
+
+.thumb_func
+    asm_invertir:
+
+    push {r4-r6}
+
+    mov r2,#0	@ utilizado como temp
+
+    mov r3,r1
+    lsr r3,1		@para utilizarlo al igual que la variable flipTimes
+
+    _invertir_loop:
+
+    sub r4,r3,#1			@utilizarlo para indexar a flipTimes -1
+    ldrh r2,[r0,r4,lsl #1]	@valores de 16 bits
+
+    sub r5,r1,r3			@utilizado para indexar a longitud-flipTimes
+    ldrh r6,[r0,r5,lsl #1]
+
+    strh r6,[r0,r4,lsl #1]	@guardo el contenido de longitud-flipTimes en flipTimes-1
+    strh r2,[r0,r5,lsl #1]	@guardo el contenido de flipTimes-1  en longitud-flipTimes
+
+    subs r3,#1
+
+    bne _invertir_loop 		@mientras que flipTimes sea mayor a cero sigo ejecutando
+
+	pop {r4-r6}
+
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
 @   void asm_addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay);
 
 @ Parametros recibidos:
