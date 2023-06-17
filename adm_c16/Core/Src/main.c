@@ -82,6 +82,7 @@ int32_t max (int32_t * vectorIn, uint32_t longitud);
 void downsampleM (int32_t * vectorIn, int32_t * vectorOut, uint32_t longitud, uint32_t N);
 void invertir (uint16_t * vector, uint32_t longitud);
 void addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay);
+void corr (int16_t *vectorX, int16_t * vectorY, int16_t* vectorCorr, uint32_t longitud);
 
 /* USER CODE END PFP */
 
@@ -235,6 +236,26 @@ int main(void)
   addEcoVector(ecoVectorSamples_C,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
   const volatile uint32_t CiclosEco_C = DWT->CYCCNT;
 
+  int16_t vectorX_C[20] = {
+		  0,2,4,6,8,
+		  10,12,14,16,18,
+		  20,22,24,26,28,
+		  30,32,34,36,38
+  };
+
+  int16_t vectorY_C[20] = {
+  		  0,2,4,6,8,
+  		  10,12,14,16,18,
+  		  20,22,24,26,28,
+  		  30,32,34,36,38
+    };
+
+  int16_t vectorCorr_C[20];
+
+  DWT->CYCCNT = 0;
+  corr(vectorX_C,vectorY_C,vectorCorr_C,20);
+  const volatile uint32_t CiclosCorr_C = DWT->CYCCNT;
+
 
   //Verificación de funciones en ASM
 
@@ -289,6 +310,26 @@ int main(void)
   DWT->CYCCNT = 0;
   asm_addEcoVector(ecoVectorSamples_ASM,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
   const volatile uint32_t CiclosEco_ASM = DWT->CYCCNT;
+
+  int16_t vectorX_ASM[20] = {
+		  0,2,4,6,8,
+		  10,12,14,16,18,
+		  20,22,24,26,28,
+		  30,32,34,36,38
+  };
+
+  int16_t vectorY_ASM[20] = {
+  		  0,2,4,6,8,
+  		  10,12,14,16,18,
+  		  20,22,24,26,28,
+  		  30,32,34,36,38
+    };
+
+  int16_t vectorCorr_ASM[20];
+
+  DWT->CYCCNT = 0;
+  asm_corr(vectorX_ASM,vectorY_ASM,vectorCorr_ASM,20);
+  const volatile uint32_t CiclosCorr_ASM = DWT->CYCCNT;
 
   /* USER CODE END 2 */
 
@@ -635,6 +676,21 @@ void addEcoVector(int16_t* vector,uint16_t longitud, uint16_t sampleDelay){
 	}
 }
 
+void corr (int16_t *vectorX, int16_t *vectorY, int16_t *vectorCorr, uint32_t longitud){
+
+	int16_t acc=0;
+
+	for(int l=0;l<longitud;l++){
+
+		for(int n=l;n<longitud;n++){
+			acc+=vectorX[n]*vectorY[n];
+		}
+
+		vectorCorr[l]=acc;
+		acc=0;
+
+	}
+}
 /* USER CODE END 4 */
 
 /**

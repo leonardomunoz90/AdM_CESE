@@ -15,6 +15,7 @@
 .global asm_downsampleM
 .global asm_invertir
 .global asm_addEcoVector
+.global asm_corr
 
 .equ WINDOW_SIZE, 11
 .equ HALF_WINDOW, 5
@@ -402,7 +403,7 @@
 @   r1: longitud
 @	r2: delay en muestras, en este caso 882
 @
-@ Valor de retorno: r0 indice de valor máximo
+@ Valor de retorno: -
 
 .thumb_func
 
@@ -435,6 +436,59 @@
 	 bne _for_eco_loop			@si son diferentes longitud e i sigo con el lazo
 
      pop {r4-r6}
+
+
+    bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
+                @ es la direccion, en el codigo del programa
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Prototipo en "C":
+@   void asm_corr (int16_t *vectorX, int16_t * vectorY, int16_t* vectorCorr, uint32_t longitud);
+
+@ Parametros recibidos:
+@   r0: dirección del vectorX
+@   r1: dirección del vectorY
+@   r2: dirección del vectorCorr
+@   r3: longitud
+@
+@ Valor de retorno:-
+
+.thumb_func
+
+    asm_corr:
+
+    push {r4-r8}
+
+    mov r4,#0		@utilizado como acc
+    mov r5,#0		@utilizado como l
+
+    _corr_l_loop:
+
+        mov r6,r5		@utilizado como n=l en inicilización del loop
+
+    _corr_n_loop:
+
+    ldrsh r7,[r0,r6,lsl 1]		@carga de contenido de vectorX en la posición n
+    ldrsh r8,[r1,r6,lsl 1]		@carga de contenido de vectorY en la posición n
+
+    smlabb r4,r7,r8,r4			@r4 = r7*r8 + r4
+    							@b hace referencia a la parte baja de cada registro
+    							@t puede usarse b o t (bottom o top)
+
+    ssat r4,16,r4				@saturo en 16 bits el resultado para ser almacenado
+
+    add r6,#1
+    cmp r6,r3			@compara n y longitud
+    bne _corr_n_loop	@si sale de acá ya terminé el primer loop
+
+    str r4,[r2,r5,lsl 1]	@asignación de acc a verctor corr en la posición l
+    mov r4,#0				@reinicia acc
+
+    add r5,#1
+    cmp r5,r3			@compara l y longitud
+    bne _corr_l_loop	@si sale de acá ya termino el segundo for
+
+    pop {r4-r8}
 
 
     bx lr       @ vuelve adonde fue llamada (especificamente, si "pc"
