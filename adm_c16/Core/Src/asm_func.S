@@ -527,7 +527,9 @@
     ldrsh r7,[r0,r6,lsl 1]		@carga de contenido de vectorX en la posición n
     ldrsh r8,[r1,r6,lsl 1]		@carga de contenido de vectorY en la posición n
 
-    smlabb r4,r7,r8,r4			@r4 = r7*r8 + r4
+    mul r7,r7,r8				@r7=r7*r8
+
+    add r4,r4,r7				@r4 = r7*r8 + r4
     							@b hace referencia a la parte baja de cada registro
     							@t puede usarse b o t (bottom o top)
 
@@ -566,10 +568,12 @@
 
     asm_simd_corr:
 
-    push {r4-r8}
+    push {r4-r9}
 
     mov r4,#0		@utilizado como acc
     mov r5,#0		@utilizado como l
+    mov r9,r3		@para mantener el valor de long en r3
+    sub r9,#1		@límite de N-2 por lo que se explica mas abajo
 
     _corr_simd_l_loop:
 
@@ -577,25 +581,29 @@
 
     _corr_simd_n_loop:
 
-    ldrsh r7,[r0,r6,lsl 1]		@carga de contenido de vectorX en la posición n
-    ldrsh r8,[r1,r6,lsl 1]		@carga de contenido de vectorY en la posición n
+    ldr r7,[r0,r6,lsl 1]		@carga de contenido de vectorX en la posición n
+    ldr r8,[r1,r6,lsl 1]		@carga de contenido de vectorY en la posición n
 
-    smlabb r4,r7,r8,r4			@r4 = r7*r8 + r4
-    							@b hace referencia a la parte baja de cada registro
-    							@t puede usarse b o t (bottom o top)
+    @al cargar 4 bytes hay que tener cuidado con el valor de n actual, si n vale
+    @18 por ejemplo, se tomarán un dato fuera de la memoria en los dos array
+    @por eso el límite para el primer for es N-2
+
+    smlad r4,r7,r8,r4			@r4 = r7*r8 + r4 (multiplico parte alta y baja en una instrucción)
+    							@es decir el elemento en n y en n-1 y la suma se coloca en r4
 
     ssat r4,16,r4				@saturo en 16 bits el resultado para ser almacenado
 
-    add r6,#1
-    cmp r6,r3			@compara n y longitud
-    bne _corr_simd_n_loop	@si sale de acá ya terminé el primer loop
+    add r6,#2				@sumo de a dos porque se cargan 4 bytes de la memoria
+    cmp r6,r9				@compara n y la longitud
+    ble _corr_simd_n_loop	@si sale de acá ya terminé el primer loop
+    						@la condición es menor o igual porque se dan saltos de a dos y puede saltarse la condición de igual
 
     str r4,[r2,r5,lsl 1]	@asignación de acc a verctor corr en la posición l
     mov r4,#0				@reinicia acc
 
     add r5,#1
-    cmp r5,r3			@compara l y longitud
-    bne _corr_simd_l_loop	@si sale de acá ya termino el segundo for
+    cmp r5,r3				@compara l y longitud total
+    ble _corr_simd_l_loop	@si sale de acá ya termino el segundo for
 
     pop {r4-r8}
 
