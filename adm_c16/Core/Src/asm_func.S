@@ -456,33 +456,40 @@
 
 .thumb_func
 
-    asm_addEcoVector:
+    asm_simd_addEcoVector:
 
     push {r4-r6}			@r5 tendrá el valor en 0 del array
     						@r6 tendrá el valor con offset en 882 muestras
 
 	mov r3,#0				@r3 analogo a i
 	mov r4,r2				@cargo en r4 882
+	asr r4,#1				@división por dos del shift porque los elementos seran traidos de a dos
+	asr r1,#1				@la longitud ahora tambien será la mitad
 
-     _for_eco_loop:
+     _for_eco_simd_loop:
 
-     	ldrsh r5,[r0,r3,lsl #1]	@cargo lo que está en la posición i y lo multiplico por 2 por ser datos de 16 bits
+		ldr r5,[r0,r3,lsl #2]	@cargo lo que está en la posición i y lo multiplico por 4 por ser 2 datos de 16 bits
 								@r2 se va a usar para mantener el valor de delay
 
-		ldrsh r6,[r0,r4,lsl #1]	@cargo lo que está en la posición 882+i y lo multiplico por 2 por ser datos de 16 bits
+		mov r6,#0
+
+		shadd16 r5,r5,r6		@ es equivalente a r5=(r5+r6)/2 pero r6 vale cero
+								@ es un mecanismo para obtener una division por 2 del contenido en la posición i
+
+		ldr r6,[r0,r4,lsl #2]	@cargo lo que está en la posición 441+i y lo multiplico por 4 por ser 2 datos de 16 bits
 								@r2 se va a usar para mantener el valor de delay
 
-		add r6,r6,r5,asr #1		@equivalente a N1 = N1 + N2>>1
-		ssat r6,16,r6
+		qadd16 r6,r6,r5			@equivalente a N1 = N1 + N2/2
+								@utilizo suma en SIMD con saturacion en 16 bits
 
-		strh r6,[r0,r4,lsl 1]  	@guardo resultado en 882+i y lo multiplico por 2 por ser datos de 16 bits
+		str r6,[r0,r4,lsl 2]  	@guardo resultado en 441+i y lo multiplico por 4 por ser 2 datos de 16 bits
 
 		add r3,#1
 		add r4,#1
 
 		cmp r4,r1
 
-	 bne _for_eco_loop			@si son diferentes longitud e i sigo con el lazo
+	 bne _for_eco_simd_loop			@si son diferentes longitud e i sigo con el lazo
 
      pop {r4-r6}
 
@@ -557,18 +564,18 @@
 
 .thumb_func
 
-    asm_corr:
+    asm_simd_corr:
 
     push {r4-r8}
 
     mov r4,#0		@utilizado como acc
     mov r5,#0		@utilizado como l
 
-    _corr_l_loop:
+    _corr_simd_l_loop:
 
         mov r6,r5		@utilizado como n=l en inicilización del loop
 
-    _corr_n_loop:
+    _corr_simd_n_loop:
 
     ldrsh r7,[r0,r6,lsl 1]		@carga de contenido de vectorX en la posición n
     ldrsh r8,[r1,r6,lsl 1]		@carga de contenido de vectorY en la posición n
@@ -581,14 +588,14 @@
 
     add r6,#1
     cmp r6,r3			@compara n y longitud
-    bne _corr_n_loop	@si sale de acá ya terminé el primer loop
+    bne _corr_simd_n_loop	@si sale de acá ya terminé el primer loop
 
     str r4,[r2,r5,lsl 1]	@asignación de acc a verctor corr en la posición l
     mov r4,#0				@reinicia acc
 
     add r5,#1
     cmp r5,r3			@compara l y longitud
-    bne _corr_l_loop	@si sale de acá ya termino el segundo for
+    bne _corr_simd_l_loop	@si sale de acá ya termino el segundo for
 
     pop {r4-r8}
 

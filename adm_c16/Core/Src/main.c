@@ -311,6 +311,16 @@ int main(void)
   asm_addEcoVector(ecoVectorSamples_ASM,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
   const volatile uint32_t CiclosEco_ASM = DWT->CYCCNT;
 
+  int16_t ecoVectorSamples_ASM_SIMD[ECO_VECTOR_LENGTH];
+
+  for(int i=-ECO_VECTOR_LENGTH/2 ; i< (ECO_VECTOR_LENGTH/2) ; i++){
+	  ecoVectorSamples_ASM_SIMD[ECO_VECTOR_LENGTH/2+i]=i;
+  }
+
+  DWT->CYCCNT = 0;
+  asm_simd_addEcoVector(ecoVectorSamples_ASM_SIMD,ECO_VECTOR_LENGTH,ECO_SAMPLE_DELAY);
+  const volatile uint32_t CiclosEco_ASM_SIMD = DWT->CYCCNT;
+
   int16_t vectorX_ASM[20] = {
 		  0,2,4,6,8,
 		  10,12,14,16,18,
@@ -330,6 +340,26 @@ int main(void)
   DWT->CYCCNT = 0;
   asm_corr(vectorX_ASM,vectorY_ASM,vectorCorr_ASM,20);
   const volatile uint32_t CiclosCorr_ASM = DWT->CYCCNT;
+
+  int16_t vectorX_ASM_SIMD[20] = {
+		  0,2,4,6,8,
+		  10,12,14,16,18,
+		  20,22,24,26,28,
+		  30,32,34,36,38
+  };
+
+  int16_t vectorY_ASM_SIMD[20] = {
+  		  0,2,4,6,8,
+  		  10,12,14,16,18,
+  		  20,22,24,26,28,
+  		  30,32,34,36,38
+    };
+
+  int16_t vectorCorr_ASM_SIMD[20];
+
+  DWT->CYCCNT = 0;
+  asm_simd_corr(vectorX_ASM,vectorY_ASM,vectorCorr_ASM_SIMD,20);
+  const volatile uint32_t CiclosCorr_ASM_SIMD = DWT->CYCCNT;
 
   /* USER CODE END 2 */
 
