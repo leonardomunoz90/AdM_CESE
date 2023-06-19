@@ -91,7 +91,8 @@
 >Una vez finalizada la interrupción, el microcontrolador retorna a la dirección que fue previamente guardada en el stack en lugar de utilizar LR, ya que este registro tiene codificado en su interior información de como volver de la rutina de atención a interrupción, por ejemplo, si debe usar PSP o MSP y si debe volver en modo handler o en modo thread. Finalmente busca en el stack los registros previamente guardados y los coloca en los registros para su retorno de ejecución (en caso de que no hubiese ninguna otra interrupción esperando ser atendida).
 
 16. ¿Cómo cambia la operación de stacking al utilizar la unidad de punto flotante? 
-> Respuesta
+> Durante el proceso de stacking, el microcontrolador verifica el bit FPCA en el registro de control, el cual indica si se ha utilizado la unidad de punto flotante. En caso de haberse utilizado, el microcontrolador también debe guardar los registros involucrados con la FPU durante el cambio de contexto. Estos registros son S0 a S15 y FPSCR que posee banderas que se corresponden con el resultado de última operación de la FPU, análogo al registro PSR. Por supuesto, una vez finaliza la rutina de atención a interrupción, estos datos deben extraerse del stack y colocarse en los registros correspondientes para que la tarea que las estaba utilizando previamente puede continuar su flujo de ejecución.
+> 
 17. Explique las características avanzadas de atención a interrupciones: tail chaining y late arrival.
 > Respuesta
 18. ¿Qué es el systick? ¿Por qué puede afirmarse que su implementación favorece la portabilidad de los sistemas operativos embebidos?
