@@ -94,7 +94,12 @@
 > Durante el proceso de stacking, el microcontrolador verifica el bit FPCA en el registro de control, el cual indica si se ha utilizado la unidad de punto flotante. En caso de haberse utilizado, el microcontrolador también debe guardar los registros involucrados con la FPU durante el cambio de contexto. Estos registros son S0 a S15 y FPSCR que posee banderas que se corresponden con el resultado de última operación de la FPU, análogo al registro PSR. Por supuesto, una vez finaliza la rutina de atención a interrupción, estos datos deben extraerse del stack y colocarse en los registros correspondientes para que la tarea que las estaba utilizando previamente puede continuar su flujo de ejecución.
 > 
 17. Explique las características avanzadas de atención a interrupciones: tail chaining y late arrival.
-> Respuesta
+> El tail chaining es una técnica que permite encadenar automáticamente múltiples interrupciones pendientes sin la necesidad de realizar un retorno completo a nivel de la subrutina de interrupción y un nuevo salto. En lugar de eso, se puede realizar un encadenamiento automático para pasar de una subrutina de interrupción a otra. Si hay otras interrupciones pendientes, se salta directamente a la siguiente subrutina de interrupción, evitando el proceso de restaurar el contexto y realizar un salto adicional. Esto reduce la latencia y el tiempo de respuesta en el manejo de múltiples interrupciones.
+>
+> El late arrival es una característica que permite que una interrupción de mayor prioridad recién activada sea atendida inmediatamente. Si hay una interrupción recién activada, se atiende inmediatamente en lugar de esperar su turno en la cola de interrupciones pendientes. Esto reduce la latencia y el tiempo de respuesta.
+>
+> Ambas características, el tail chaining y el late arrival, contribuyen a mejorar la eficiencia y la capacidad de respuesta en el manejo de múltiples interrupciones. 
+
 18. ¿Qué es el systick? ¿Por qué puede afirmarse que su implementación favorece la portabilidad de los sistemas operativos embebidos?
 > SysTick es un temporizador utilizado en muchos sistemas operativos embebidos para proporcionar una base de tiempo y generar interrupciones periódicas, por ejemplo, en freeRTOS donde proporciona una forma de medir el tiempo y ejecutar código en intervalos regulares. Además, favorece la portabilidad de los sistemas operativos embebidos por ser estándar de la arquitectura Cortex-M.
 
