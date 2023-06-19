@@ -114,7 +114,10 @@
 20. ¿Cuántas regiones pueden configurarse como máximo? ¿Qué ocurre en caso de haber solapamientos de las regiones? ¿Qué ocurre con las zonas de memoria no cubiertas por las regiones definidas?
 > Respuesta
 21. ¿Para qué se suele utilizar la excepción PendSV? ¿Cómo se relaciona su uso con el resto de las excepciones? Dé un ejemplo
-> Respuesta
+> La excepción PendSV se utiliza comúnmente para implementar en un sistema operativo en tiempo real o en aplicaciones donde se requiere una conmutación de contexto. Es una excepción de usuario, lo que significa que puede ser generada por software y no está asociada con eventos específicos de hardware. Su propósito principal es permitir la planificación y conmutación de tareas o procesos en un entorno multitarea.
+>
+> Por ejemplo, cuando en el microcontrolador se ejecutan N interrupciones de Systick (dependiendo la configuración de usuario del tamaño del slot de tiempo ejecución), se indica al microcontrolador que debe realizarse una conmutación de tarea mediante la interrupción PendSV, la cual tiene una prioridad menor que Systick, de esta manera, la rutina de atención de Systick puede terminar previo a la atención de PendSV.
+
 22. ¿Para qué se suele utilizar la excepción SVC? Expliquelo dentro de un marco de un sistema operativo embebido.
 > Una tarea de usuario dentro de un sistema operativo no puede realizar una llamada a periféricos o a memoria de manera directa por no poseer privilegios para hacerlo. Sino que esto debe hacerlo el sistema operativo. Una herramienta que dispone el usuario para hacerlo es a través del llamado a la excepción por software SVC, la cual puede llamarse desde modo no privilegiado. 
 > 
