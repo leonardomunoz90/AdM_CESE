@@ -84,7 +84,12 @@
 > - Independiente del toolchain: los driver de dispositivos compatibles con CMSIS se pueden usar con varias herramientas de compilación.
 
 15. Cuando ocurre una interrupción, asumiendo que está habilitada ¿Cómo opera el microprocesador para atender a la subrutina correspondiente? Explique con un ejemplo
-> Respuesta
+> Cuando ocurre una interrupción, el microcontrolador debe guardar el contexto de operación actual en el stack, esto incluye los registros de propósito general R0 a R3, R12, LR, la dirección a la cual debe retornar una vez termine la interrupción y el registro xPSR (en caso de que se hubiesen utilizado operaciones de punto flotante también deben guardarse estos registros, esto se explicará en una pregunta posterior).
+> 
+> Durante el proceso de cambio de contexto, también llamado stacking, el microcontrolador busca la dirección de la primera instrucción a ejecutar (puede hacerlo de manera simultánea al stacking por ser una arquitectura Harvard) en la posición del vector de interrupciones correspondiente. Además, una vez que el microcontrolador comienza la ejecución de la rutina de atención a interrupción, pasa a modo handler con nivel privilegiado de ejecución.
+> 
+>Una vez finalizada la interrupción, el microcontrolador retorna a la dirección que fue previamente guardada en el stack en lugar de utilizar LR, ya que este registro tiene codificado en su interior información de como volver de la rutina de atención a interrupción, por ejemplo, si debe usar PSP o MSP y si debe volver en modo handler o en modo thread. Finalmente busca en el stack los registros previamente guardados y los coloca en los registros para su retorno de ejecución (en caso de que no hubiese ninguna otra interrupción esperando ser atendida).
+
 16. ¿Cómo cambia la operación de stacking al utilizar la unidad de punto flotante? 
 > Respuesta
 17. Explique las características avanzadas de atención a interrupciones: tail chaining y late arrival.
