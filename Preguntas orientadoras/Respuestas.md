@@ -75,7 +75,12 @@
 
 
 13. ¿Cómo se implementan las prioridades de las interrupciones? Dé un ejemplo
-> Respuesta
+> El NVIC asigna prioridades a las interrupciones utilizando 8 bits, permitiendo un total de 256 niveles de interrupción. Entre estos, se definen interrupciones con nivel de prioridad negativo por su gran importancia (reset, NMI y HardFault). Según sea este nivel se determina qué interrupciones se atienden primero en caso de que múltiples interrupciones ocurran simultáneamente. 
+>
+> Las prioridades se dividen en grupos y subgrupos, donde cada grupo tiene un conjunto de prioridades asignadas. Esto se utiliza para establecer la prioridad de interrupciones y excepciones. 
+> - Los grupos de prioridades dividen las fuentes de interrupción y excepciones en diferentes niveles o grupos.
+> - Los subgrupos de prioridades se utilizan dentro de cada grupo de prioridades para establecer una mayor granularidad en la prioridad de las interrupciones y excepciones.
+> - Dentro de un mismo grupo de prioridades, las interrupciones o excepciones con menor número de subgrupo tienen mayor prioridad.
 
 14. ¿Qué es el CMSIS? ¿Qué función cumple? ¿Quién lo provee? ¿Qué ventajas aporta?
 > Es un proyecto de ARM que permite que la programación de microcontroladorea basados en Cortex-M sea sencilla y migrable a productos de diferentes fabricantes, al proporcionar archivos y una API para las funciones estándar del procesador Cortex-M. Las ventajas que CMSIS aporta son:
