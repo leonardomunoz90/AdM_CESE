@@ -112,7 +112,10 @@
 > La MPU también se puede usar para hacer que las regiones de la memoria sean de solo lectura, para evitar el borrado accidental de datos en SRAM o la sobrescritura del código de instrucciones. De forma predeterminada, la MPU está deshabilitada y las aplicaciones que no requieren una función de protección de memoria no tienen que inicializarla.
 
 20. ¿Cuántas regiones pueden configurarse como máximo? ¿Qué ocurre en caso de haber solapamientos de las regiones? ¿Qué ocurre con las zonas de memoria no cubiertas por las regiones definidas?
-> Respuesta
+> En la arquitectura ARMv7 puede configurarse un máximo de 8 regiones de memoria además de una región de background para los sectores de memoria que no fueron cubiertas. Los permisos de esta región de background dependerán del valor del campo PRIVDEFENA dentro de la estructura MPU->CTRL, en caso de estar en 1 se utilizará un nivel de acceso privilegiado, si está en 0 cualquier acceso a esta región de background generará una falla.
+>
+> En caso de existir un solapamiento entre regiones de memoria, se aplicarán los permisos de mayor restricción entre las regiones que correspondan con dicho solapamiento.
+
 21. ¿Para qué se suele utilizar la excepción PendSV? ¿Cómo se relaciona su uso con el resto de las excepciones? Dé un ejemplo
 > La excepción PendSV se utiliza comúnmente para implementar en un sistema operativo en tiempo real o en aplicaciones donde se requiere una conmutación de contexto. Es una excepción de usuario, lo que significa que puede ser generada por software y no está asociada con eventos específicos de hardware. Su propósito principal es permitir la planificación y conmutación de tareas o procesos en un entorno multitarea.
 >
